@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseNotFound,HttpResponseRedirect
 from django.urls import reverse
+from django.template.loader import render_to_string
 
 # Create your views here.
 
@@ -19,22 +20,29 @@ monthly_challenges={
     "April": "Eat No meat for 30 days",
     "May": "Walk for atleast 20 Mins Everyday",
     "June": "Eat No meat for 30 days",
-    "July": "Learn Django for 20mins everyday"
+    "July": "Learn Django for 20mins everyday",
+    "December": None
     
 }
 
 def index(request):
     months= list(monthly_challenges.keys())
-    res_list=""
-    for month in months:
-        month_path= reverse("challenge-main",args=[month])
-        capitalized_month=month.capitalize()
-        res_list+=f"<li><a href=\"{month_path}\">{capitalized_month}</a></li>"
+    return render(request,"Challenges/index.html",{
+        "months": months
         
-    respose_data=f"<ul>{res_list}</ul>"
-        
+    })
     
-    return HttpResponse(respose_data)
+    
+    
+    
+    
+    # res_list=""
+    # for month in months:
+    #     month_path= reverse("challenge-main",args=[month])
+    #     capitalized_month=month.capitalize()
+    #     res_list+=f"<li><a href=\"{month_path}\">{capitalized_month}</a></li>"
+    # respose_data=f"<ul>{res_list}</ul>"
+    # return HttpResponse(respose_data)
 
 
 def monthy_challenges_by_number(request,month):
@@ -51,13 +59,14 @@ def monthy_challenges_by_number(request,month):
 
 def monthy_challenges(request,month):
    
-    try:
-        challenge_var=monthly_challenges[month]
-        response_data=f"<h1>{challenge_var}</h1>"
-    except:
-        return HttpResponseNotFound("HTTP Response not found")
-    
-    return HttpResponse(challenge_var)
+    challenge_var=monthly_challenges[month]
+    # #response_data=f"<h1>{challenge_var}</h1>"
+    # response_data= render_to_string("Challenges\Challenge.html")
+    # return HttpResponse(response_data)
+    return render(request,"Challenges/Challenge.html",{
+        "text": challenge_var,
+        "month_name": month.capitalize()
+    })
     # challenge_var=None
     # if month=="January":
     #     challenge_var="Do not Eat Meat for 3 Months"

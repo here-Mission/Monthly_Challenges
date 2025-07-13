@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{%load static %}
+{% block css_file %}
+<link rel="stylesheet" href="{% static 'Challenges/challenge.css' %}">
+{%endblock%}
+{%block title_name %} {{ month_name }} Challenge{%endblock%}
+
+{%block content %}
+{%include "Challenges/includes/header.html"%}
+    <h1>{{month_name}} Challenge</h1>
+    {%if text is not None%}
+    <h2>{{ text|title }}</h2>
+    {%else%}
+    <p class="fallback">Nahi rkha bhai kuch duniya mein</p>
+    {%endif%}
+
+{%endblock%}
